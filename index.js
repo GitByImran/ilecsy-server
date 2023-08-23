@@ -91,6 +91,8 @@ async function run() {
       const productId = req.params.productId;
       const updatedProduct = req.body;
 
+      console.log(updatedProduct);
+
       try {
         const existingProduct = await productCollection.findOne({
           _id: new ObjectId(productId),
@@ -100,14 +102,14 @@ async function run() {
           return res.status(404).send({ message: "Product not found" });
         }
 
-        // Perform the update for the allowed fields 
+        // Perform the update for the allowed fields
         const updates = {};
         if (updatedProduct.productName)
           updates.productName = updatedProduct.productName;
         if (updatedProduct.productImage)
           updates.productImage = updatedProduct.productImage;
-        if (updatedProduct.availableQuantity)
-          updates.availableQuantity = updatedProduct.availableQuantity;
+        if (updatedProduct.availablity)
+          updates.availablity = updatedProduct.availablity; 
         if (updatedProduct.price) updates.price = updatedProduct.price;
         if (updatedProduct.tax) updates.tax = updatedProduct.tax;
         if (updatedProduct.category) updates.category = updatedProduct.category;
@@ -123,11 +125,13 @@ async function run() {
         }
 
         res.send(updatedProductResult.value);
+        console.log(updatedProductResult);
       } catch (error) {
         console.error("Error updating product:", error);
         res.status(500).send({ message: "Internal server error" });
       }
     });
+
 
     // users
     app.post("/users", async (req, res) => {
